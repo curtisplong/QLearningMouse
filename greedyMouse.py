@@ -9,6 +9,8 @@ from importlib import reload
 reload(setup)
 reload(qlearn)
 
+import pickle
+import os
 
 def pick_random_location():
     while 1:
@@ -131,6 +133,8 @@ class Mouse(setup.Agent):
         self.lastAction = None
         self.color = cfg.mouse_color
 
+        self.load_state()
+
         print('mouse init...')
 
     def update(self):
@@ -176,6 +180,20 @@ class Mouse(setup.Agent):
         dirs = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
         return tuple([cell_value(world.get_relative_cell(self.cell.x + dir[0], self.cell.y + dir[1])) for dir in dirs])
 
+    def save_state(self):
+        with open('mouse.pickle', 'wb') as f:
+            # Pickle the 'data' dictionary using the highest protocol available.
+            pickle.dump(self.ai.q, f, pickle.HIGHEST_PROTOCOL)
+        return
+
+    def load_state(self):
+        if (os.path.isfile('mouse.pickle')):
+            with open('mouse.pickle', 'rb') as f:
+                self.ai.q = pickle.load(f)
+        return
+
+
+
 if __name__ == '__main__':
     mouse = Mouse()
     cat = Cat(filename='resources/world.txt')
@@ -189,5 +207,9 @@ if __name__ == '__main__':
     world.display.activate()
     world.display.speed = cfg.speed
 
-    while 1:
+    i = 0
+    while i < cfg.iterations:
         world.update(mouse.mouseWin, mouse.catWin)
+        i += 1
+
+    mouse.save_state()

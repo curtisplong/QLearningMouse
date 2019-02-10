@@ -49,6 +49,8 @@ class Agent:
         self.cell = target
         return True
 
+    def save_state(self):
+        return True
 
 class World:
     def __init__(self, cell=None, directions=cfg.directions, filename=None):
@@ -232,6 +234,8 @@ class tkinterDisplay:
         self.root.bind('<Escape>', self.quit)
 
     def quit(self):
+        for x in self.agents:
+            x.save_state()
         self.root.destroy()
 
     def update(self):
