@@ -44,7 +44,7 @@ class Agent:
     def go_direction(self, dir):
         target = self.cell.neighbors[dir]
         if getattr(target, 'wall', False):
-            print "hit a wall"
+            #print "hit a wall"
             return False
         self.cell = target
         return True
