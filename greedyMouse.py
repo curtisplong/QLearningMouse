@@ -157,7 +157,7 @@ class Mouse(setup.Agent):
             if (self.round % 10) == 0:
                 winrate = round((self.wincount / float(10)), 2)
                 self.wincount = 0
-                print "round:" + str(self.round) + ', ' + "Mouse: " + str(self.mouseWin) + ', ' + 'Cat: ' + str(self.catWin) + ', ' + 'Win rate: ' + str(winrate)
+                print("round:" + str(self.round) + ', ' + "Mouse: " + str(self.mouseWin) + ', ' + 'Cat: ' + str(self.catWin) + ', ' + 'Win rate: ' + str(winrate))
                 with open('log.txt', 'a') as logfile:
                     logfile.write((str(self.round) + ',' + str(self.mouseWin) + ',' + str(self.catWin) + ',' + str(winrate) + '\n'))
            
@@ -181,7 +181,7 @@ class Mouse(setup.Agent):
             if (self.round % 10) == 0:
                 winrate = round((self.wincount / float(10)), 2)
                 self.wincount = 0
-                print "round:" + str(self.round) + ', ' + "Mouse: " + str(self.mouseWin) + ', ' + 'Cat: ' + str(self.catWin) + ', ' + 'Win rate: ' + str(winrate)
+                print("round:" + str(self.round) + ', ' + "Mouse: " + str(self.mouseWin) + ', ' + 'Cat: ' + str(self.catWin) + ', ' + 'Win rate: ' + str(winrate))
                 with open('log.txt', 'a') as logfile:
                     logfile.write((str(self.round) + ',' + str(self.mouseWin) + ',' + str(self.catWin) + ',' + str(winrate) + '\n'))
 			
