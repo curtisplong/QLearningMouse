@@ -26,7 +26,7 @@ class QLearn:
 
     # When in certain state, find the best action while explore new grid by chance.
     def choose_action(self, state):
-        if random.random < self.epsilon:
+        if random.random() < self.epsilon:
             action = random.choice(self.actions)
         else:
             q = [self.get_utility(state, act) for act in self.actions]
@@ -34,7 +34,7 @@ class QLearn:
             # In case there're several state-action max values
             # we select a random one among them
             if q.count(max_utility) > 1:
-                best_actions = [self.actions[i] for i in xrange(len(self.actions)) if q[i] == max_utility]
+                best_actions = [self.actions[i] for i in range(len(self.actions)) if q[i] == max_utility]
                 action = random.choice(best_actions)
             else:
                 action = self.actions[q.index(max_utility)]

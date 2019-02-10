@@ -1,8 +1,8 @@
 # coding:utf-8
 
 import time
-import Tkinter
-import cStringIO
+import tkinter
+from io import StringIO
 import random
 import config as cfg
 
@@ -25,7 +25,7 @@ class Cell:
 
     def __getattr__(self, key):
         if key == 'neighbors':
-            opts = [self.world.get_next_grid(self.x, self.y, dir) for dir in xrange(self.world.directions)]
+            opts = [self.world.get_next_grid(self.x, self.y, dir) for dir in range(self.world.directions)]
             next_states = tuple(self.world.grid[y][x] for (x, y) in opts)
             return next_states
         raise AttributeError(key)
@@ -44,7 +44,7 @@ class Agent:
     def go_direction(self, dir):
         target = self.cell.neighbors[dir]
         if getattr(target, 'wall', False):
-            print "hit a wall"
+            print("hit a wall")
             return False
         self.cell = target
         return True
@@ -77,15 +77,15 @@ class World:
     def get_file_size(self, filename):
         if filename is None:
             raise Exception("world file not exist!")
-        data = file(filename).readlines()
+        data = open(filename).readlines()
         if self.height is None:
             self.height = len(data)
         if self.width is None:
             self.width = max([len(x.rstrip()) for x in data])
 
     def reset(self):
-        self.grid = [[self.make_cell(i, j) for i in xrange(self.width)] for j in xrange(self.height)]
-        self.dictBackup = [[{} for _i in xrange(self.width)] for _j in xrange(self.height)]
+        self.grid = [[self.make_cell(i, j) for i in range(self.width)] for j in range(self.height)]
+        self.dictBackup = [[{} for _i in range(self.width)] for _j in range(self.height)]
         self.agents = []
         self.age = 0
 
@@ -107,7 +107,7 @@ class World:
         if not hasattr(self.Cell, 'load'):
             return
         if isinstance(f, type('')):
-            f = file(f)
+            f = open(f)
         lines = f.readlines()
         lines = [x.rstrip() for x in lines]
         fh = len(lines)
@@ -117,17 +117,17 @@ class World:
             fh = self.height
             start_y = 0
         else:
-            start_y = (self.height - fh) / 2
+            start_y = int((self.height - fh) / 2)
         if fw > self.width:
             fw = self.width
             start_x = 0
         else:
-            start_x = (self.width - fw) / 2
+            start_x = int((self.width - fw) / 2)
 
         self.reset()
-        for j in xrange(fh):
+        for j in range(fh):
             line = lines[j]
-            for i in xrange(min(fw, len(line))):
+            for i in range(min(fw, len(line))):
                 self.grid[start_y + j][start_x + i].load(line[i])
 
     def update(self, mouse_win=None, cat_win=None):
@@ -199,7 +199,7 @@ class World:
 
 
 # GUI display
-class TkinterDisplay:
+class tkinterDisplay:
     def __init__(self, size=cfg.grid_width):
         self.activated = False
         self.paused = False
@@ -218,13 +218,13 @@ class TkinterDisplay:
 
     def activate(self):
         if self.root is None:
-            self.root = Tkinter.Tk()
+            self.root = tkinter.Tk()
         for c in self.root.winfo_children():
             c.destroy()
         self.bg = None
         self.activated = True
-        self.imageLabel = Tkinter.Label(self.root)
-        self.imageLabel.pack(side=Tkinter.LEFT, fill=Tkinter.BOTH, expand=1)
+        self.imageLabel = tkinter.Label(self.root)
+        self.imageLabel.pack(side=tkinter.LEFT, fill=tkinter.BOTH, expand=1)
         self.frameWidth, self.frameHeight = self.world.width * self.size, self.world.height * self.size
         self.root.geometry('%dx%d' % (self.world.width * self.size, self.world.height * self.size))
         self.root.update()
@@ -292,12 +292,12 @@ class TkinterDisplay:
         if hexgrid:
             iw += self.size / 2
 
-        f = file('temp.ppm', 'wb')
-        f.write('P6\n%d %d\n255\n' % (iw, ih))
+        f = open('temp.ppm', 'wb')
+        f.write(bytearray('P6\n%d %d\n255\n' % (iw, ih), 'utf-8'))
 
         odd = False
         for row in self.world.grid:
-            line = cStringIO.StringIO()
+            line = StringIO()
             if hexgrid and odd:
                 line.write(self.getBackground() * (self.size / 2))
             for cell in row:
@@ -311,10 +311,10 @@ class TkinterDisplay:
                 line.write(self.getBackground() * (self.size / 2))
             odd = not odd
 
-            f.write(line.getvalue() * self.size)
+            f.write(bytearray(line.getvalue() * self.size, 'utf-8'))
         f.close()
 
-        self.image = Tkinter.PhotoImage(file='temp.ppm')
+        self.image = tkinter.PhotoImage(file='temp.ppm')
         self.imageLabel.config(image=self.image)
 
     imageCache = {}
@@ -335,7 +335,7 @@ class TkinterDisplay:
 
         sub = self.imageCache.get(c, None)
         if sub is None:
-            sub = Tkinter.PhotoImage(width=1, height=1)
+            sub = tkinter.PhotoImage(width=1, height=1)
             sub.put(c, to=(0, 0))
             sub = sub.zoom(self.size)
             self.imageCache[c] = sub
@@ -375,6 +375,6 @@ class TkinterDisplay:
 
 
 def make_display(world):
-    d = TkinterDisplay()
+    d = tkinterDisplay()
     d.world = world
     return d

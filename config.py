@@ -7,7 +7,7 @@ wall_color = '#D3CAB4'
 cat_color = '#000000'
 mouse_color = '#06B1C8'
 cheese_color = '#DAA72A'
-speed = 10   # animal speed is 10m/s, the max value supposed to be less than 1000.
+speed = 1000   # animal speed is 10m/s, the max value supposed to be less than 1000.
 
 
 # -----Learning Parameters---

@@ -4,7 +4,8 @@ import random
 import setup
 import qlearn
 import config as cfg
-from Queue import Queue
+from queue import Queue
+from importlib import reload
 reload(setup)
 reload(qlearn)
 
@@ -23,22 +24,22 @@ class Cat(setup.Agent):
         self.cell = None
         self.catWin = 0
         self.color = cfg.cat_color
-        f = file(filename)
+        f = open(filename)
         lines = f.readlines()
         lines = [x.rstrip() for x in lines]
         self.fh = len(lines)
         self.fw = max([len(x) for x in lines])
-        self.grid_list = [[1 for x in xrange(self.fw)] for y in xrange(self.fh)]
+        self.grid_list = [[1 for x in range(self.fw)] for y in range(self.fh)]
         self.move = [(0, -1), (1, -1), (
                 1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1)]
 
-        for y in xrange(self.fh):
+        for y in range(self.fh):
             line = lines[y]
-            for x in xrange(min(self.fw, len(line))):
+            for x in range(min(self.fw, len(line))):
                 t = 1 if (line[x] == 'X') else 0
                 self.grid_list[y][x] = t
 
-        print 'cat init success......'
+        print('cat init success......')
 
     # using BFS algorithm to move quickly to target.
     def bfs_move(self, target):
@@ -60,11 +61,11 @@ class Cat(setup.Agent):
         preV = {}
         V[(start[0], start[1])] = 1
 
-        print 'begin BFS......'
+        print('begin BFS......')
         while not q.empty():
             grid = q.get()
 
-            for i in xrange(8):
+            for i in range(8):
                 ny, nx = grid[0] + self.move[i][0], grid[1] + self.move[i][1]
                 if nx < 0 or ny < 0 or nx > (self.fw-1) or ny > (self.fh-1):
                     continue
@@ -82,7 +83,7 @@ class Cat(setup.Agent):
                         assert len(k) == 1
                         last = preV[(k[0][0], k[0][1])]
                     seq.reverse()
-                    print seq
+                    print(seq)
 
                     best_move = world.grid[seq[0][0]][seq[0][1]]
 
@@ -96,7 +97,7 @@ class Cat(setup.Agent):
         else:
             dir = random.randrange(cfg.directions)
             self.go_direction(dir)
-            print "!!!!!!!!!!!!!!!!!!"
+            print("!!!!!!!!!!!!!!!!!!")
 
     def get_value(self, mdict, key):
         try:
@@ -105,10 +106,10 @@ class Cat(setup.Agent):
             return 0
 
     def update(self):
-        print 'cat update begin..'
+        print('cat update begin..')
         if self.cell != mouse.cell:
             self.bfs_move(mouse.cell)
-            print 'cat move..'
+            print('cat move..')
 
 
 class Cheese(setup.Agent):
@@ -116,37 +117,37 @@ class Cheese(setup.Agent):
         self.color = cfg.cheese_color
 
     def update(self):
-        print 'cheese update...'
+        print('cheese update...')
         pass
 
 
 class Mouse(setup.Agent):
     def __init__(self):
         self.ai = None
-        self.ai = qlearn.QLearn(actions=xrange(cfg.directions), alpha=0.1, gamma=0.9, epsilon=0.1)
+        self.ai = qlearn.QLearn(actions=range(cfg.directions), alpha=0.1, gamma=0.9, epsilon=0.1)
         self.catWin = 0
         self.mouseWin = 0
         self.lastState = None
         self.lastAction = None
         self.color = cfg.mouse_color
 
-        print 'mouse init...'
+        print('mouse init...')
 
     def update(self):
-        print 'mouse update begin...'
+        print('mouse update begin...')
         state = self.calculate_state()
         reward = cfg.MOVE_REWARD
 
         if self.cell == cat.cell:
-            print 'eaten by cat...'
+            print('eaten by cat...')
             self.catWin += 1
             reward = cfg.EATEN_BY_CAT
             if self.lastState is not None:
                 self.ai.learn(self.lastState, self.lastAction, state, reward)
-                print 'mouse learn...'
+                print('mouse learn...')
             self.lastState = None
             self.cell = pick_random_location()
-            print 'mouse random generate..'
+            print('mouse random generate..')
             return
 
         if self.cell == cheese.cell:
