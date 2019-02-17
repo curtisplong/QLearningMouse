@@ -127,7 +127,7 @@ class Cheese(setup.Agent):
 class Mouse(setup.Agent):
     def __init__(self):
         self.ai = None
-        self.ai = qlearn.QLearn(actions=range(cfg.directions), alpha=0.1, gamma=0.9, epsilon=0.1)
+        self.ai = qlearn.QLearn(actions=range(cfg.directions), alpha=cfg.alpha, gamma=cfg.gamma, epsilon=cfg.epsilon)
         self.catWin = 0
         self.mouseWin = 0
         self.round = 1
