@@ -22,8 +22,8 @@ epsilon = 0.1  # exploration chance
 
 
 # ------Reward and Punishment----
-EAT_CHEESE = 50
-EATEN_BY_CAT = -100
+EAT_CHEESE = 100
+EATEN_BY_CAT = -50
 MOVE_REWARD = -1
 
 # determine how many directions can agent moves.

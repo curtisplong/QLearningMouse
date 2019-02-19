@@ -11,6 +11,7 @@ reload(qlearn)
 
 import pickle
 import os
+from datetime import datetime 
 
 def pick_random_location():
     while 1:
@@ -134,6 +135,7 @@ class Mouse(setup.Agent):
         self.wincount = 0
         self.lastState = None
         self.lastAction = None
+        self.logfilename = 'log-' + datetime.now().strftime('%Y%m%d-%H%M%S') + '-'  + str(os.getpid()) + '.txt'
         self.color = cfg.mouse_color
 
         self.load_state()
@@ -158,7 +160,7 @@ class Mouse(setup.Agent):
                 winrate = round((self.wincount / float(10)), 2)
                 self.wincount = 0
                 print("round:" + str(self.round) + ', ' + "Mouse: " + str(self.mouseWin) + ', ' + 'Cat: ' + str(self.catWin) + ', ' + 'Win rate: ' + str(winrate))
-                with open('log.txt', 'a') as logfile:
+                with open(self.logfilename, 'a') as logfile:
                     logfile.write((str(self.round) + ',' + str(self.mouseWin) + ',' + str(self.catWin) + ',' + str(winrate) + '\n'))
            
             self.round += 1		
@@ -182,7 +184,7 @@ class Mouse(setup.Agent):
                 winrate = round((self.wincount / float(10)), 2)
                 self.wincount = 0
                 print("round:" + str(self.round) + ', ' + "Mouse: " + str(self.mouseWin) + ', ' + 'Cat: ' + str(self.catWin) + ', ' + 'Win rate: ' + str(winrate))
-                with open('log.txt', 'a') as logfile:
+                with open(self.logfilename, 'a') as logfile:
                     logfile.write((str(self.round) + ',' + str(self.mouseWin) + ',' + str(self.catWin) + ',' + str(winrate) + '\n'))
 			
             self.round += 1

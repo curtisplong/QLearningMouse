@@ -315,7 +315,7 @@ class tkinterDisplay:
                 line.write(self.getBackground() * (self.size / 2))
             odd = not odd
 
-            f.write(bytearray(line.getvalue() * self.size, 'utf-8'))
+            f.write(bytearray((line.getvalue() * iw) + "\n", 'utf-8'))
         f.close()
 
         self.image = tkinter.PhotoImage(file='temp.ppm')
