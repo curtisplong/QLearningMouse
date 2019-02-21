@@ -58,21 +58,21 @@ for line in lines:
                 # serious code issue from QLearningMouse here - directions are translated differently TODO debug
                 # dirs = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
                 # dx, dy = [(0, -1), (1, -1), ( 1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0), (-1, -1)]
-                if (action == 7):
+                if (action == 0):
                     ch ='↖' # up left
-                elif (action == 6):
+                elif (action == 1):
                     ch ='←' # left
-                elif (action == 5):
+                elif (action == 2):
                     ch ='↙' # down left
-                elif (action == 0):
+                elif (action == 3):
                     ch ='↑' # up
                 elif (action == 4):
                     ch ='↓' # down
-                elif (action == 1):
+                elif (action == 5):
                     ch ='↗' # up right
-                elif (action == 2):
+                elif (action == 6):
                     ch ='→' # right
-                elif (action == 3):
+                elif (action == 7):
                     ch ='↘' # down right
             print(ch, end='')
     j = j + 1
